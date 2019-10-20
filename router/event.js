@@ -1,14 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { userRegister } = require("../controller/event")
+const { eventDetails } = require("../controller/event")
+const { requireAuth } = require("../middleware/auth");
 
 /**
- * @router api/eventID/register
- * @desc allow user to register event
- * @access for student or public 
+ * @router api/{userID | EventID}
+ * @desc get Event details using userID or eventID
+ * @access for all user
  */
-router.post('/:eventID/register', userRegister)
+router.get('/:eventID', requireAuth, eventDetails)
 
+router.post('/:eventID/edit')
 
 
 

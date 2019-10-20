@@ -17,7 +17,7 @@ exports.adminRegister = async (req, res) => {
     const user = await User.findOne({$or:[{username},{email}]})
     if (user) {
       if (user.username == username) return res.status(409).json({ message: "Username already exist" })
-      if (user.email == email) return res.status(409).json({ message: "Email alrady exist" })
+      if (user.email == email) return res.status(409).json({ message: "Email already exist" })
     }
     const newUser = new User({
       username,

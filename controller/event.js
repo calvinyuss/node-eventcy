@@ -1,49 +1,19 @@
-const Form = require('../models/form')
 const Event = require('../models/event')
 
-/**
- * @router api/eventID/register
- * @desc allow user to register event
- * @access for student or public 
- */
-exports.userRegister = async (req, res) => {
-  try {
-    const event = await Event.findById(req.params.eventID);
-    const field = req.body;
-
-    //check if already register
-    const email = await Form.find({ Email: req.body.email });
-    if (email.length > 0) return res.status(409).json({ errorMessage: "Email already Exist" });
-
-    //saving user field to json
-    let userForm = {};
-    for (let [key, value] of Object.entries(field)) {
-      if (!value) return res.status(400).json({ errorMessage: `${key}field is empty` });
-      userForm[key] = value;
-    }
-    userForm["Date"] = Date.now();
-
-    const newUserForm = Form({
-      ownedBy: event._id,
-      data: userForm
-    });
-    let saveNewFrom = await newUserForm.save();
-    res.status(201).json({ message: "Register success" })
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ errorMessage: "Something went wrong try again" })
-  }
-}
 
 /**
- * @router api/eventID
+ * @router api/{userID | EventID}
+ * @desc get Event details using userID or eventID
+ * @access for all user
  */
 exports.eventDetails = async (req, res) => {
   try {
-    const event = await Event.findById(req.params.eventID);
+    const event = await Event.findOne({createBy:req.param.eventID});
+    if (!event) event = await Event.findById(req.param.eventID)
     res.status(200).json(event)
   } catch (err) {
     console.log(err)
     res.status(500).json({ errorMessage: "Something went wrong try again" })
   }
 }
+

@@ -5,7 +5,7 @@ const EventSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
-    name : {
+    name: {
         type: String,
         default: ""
     },
@@ -13,26 +13,30 @@ const EventSchema = mongoose.Schema({
         type: String,
         default: ""
     },
-    price : {
+    openRegis: {
+        type: Boolean,
+        default: false,
+    },
+    price: {
         type: Number,
         default: ""
     },
-    seat: {
+    payementTo: {
         type: String,
         default: ""
     },
-    openRegis: {
+    openRegisDate: {
         type: Date,
         default: Date.now()
     },
-    closeRegis: {
+    closeRegisDate: {
         type: Date,
         default: Date.now() + 3600
     },
-    RSVPID: {
-        type: Array,
-        ref:"RSVP"
-    }
+    RSVPID: [{
+        _id: mongoose.Schema.Types.ObjectId,
+        label: String
+    }]
 })
 
-module.exports = mongoose.model('Event',EventSchema);
+module.exports = mongoose.model('Event', EventSchema);

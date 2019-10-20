@@ -16,10 +16,10 @@ passport.use(
       const user = await User.findOne({ username })
       if (!user) return done(null, false, { message: "Invalid username or password" })
       // Match password
-      bcrypt.compare(password, user.password, (err,isMatch) => {
-        
-        if(err) return done(null, false, { message: "Something went wrong, please try again" })
-        if (isMatch)return done(null, user);
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+
+        if (err) return done(null, false, { message: "Something went wrong, please try again" })
+        if (isMatch) return done(null, user);
         return done(null, false, { message: 'Invalid username or password' });
       });
     } catch (err) {
@@ -38,11 +38,10 @@ passport.use(
     try {
       const user = await User.findById(payload._id);
       if (!user) return done(null, false, { message: "Invalid username or password" })
-      console.log(payload.exp < Date.now())
       if (payload.exp > Date.now()) return done(null, false, { message: "Your session has expired!" });
-      return done("login success", user);
+      done(null, user);
     } catch (error) {
-      console.log({ error });
+      console.log(error);
       done(null, false, { message: "Something went wrong, please try again" });
     }
   }));
