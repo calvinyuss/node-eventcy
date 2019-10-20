@@ -14,6 +14,8 @@ app.use(methodOverride("_method"));
 //admin login api 
 app.use("/auth",require("./router/admin/auth"))
 
+app.use("/api/admin",require("./router/admin/admin"))
+
 //event api 
 app.use("/api/event",require("./router/event"))
 
