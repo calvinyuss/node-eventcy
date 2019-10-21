@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const EventSchema = mongoose.Schema({
-    createBy: {
+    createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
