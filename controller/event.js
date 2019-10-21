@@ -2,7 +2,7 @@ const Event = require('../models/event')
 
 
 /**
- * @router GET api/{userID | EventID}
+ * @router GET api/event/{userID | EventID}
  * @desc get Event details using userID or eventID
  * @access for all user
  * @return event details 
@@ -23,7 +23,7 @@ exports.eventDetails = async (req, res) => {
 }
 
 /**
- * @router PUT api/{eventID}
+ * @router PUT api/event/{eventID}
  * @desc edit event details
  * @access for admin only
  * @return update event details in database

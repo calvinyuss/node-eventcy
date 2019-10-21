@@ -1,4 +1,4 @@
-  require("dotenv").config();
+require("dotenv").config();
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
 const cors = require("cors");
@@ -12,12 +12,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
 //admin login api 
-app.use("/auth",require("./router/admin/auth"))
+app.use("/auth", require("./router/admin/auth"))
 
-app.use("/api/admin",require("./router/admin/admin"))
+app.use("/api/admin", require("./router/admin/admin"))
 
 //event api 
-app.use("/api/event",require("./router/event"))
+app.use("/api/event", require("./router/event"))
 
 const PORT = process.env.PORT || 8000;
 

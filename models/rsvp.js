@@ -6,33 +6,30 @@ const RSVPSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "event"
     },
-    RSVPName: {
+    rsvpName: {
         type: String,
         required: true,
         default: "Registration"
     },
-    RSVPDetail: {
+    rsvpDetail: {
         type: String,
         default: ""
     },
     seatCount: Number,
     forStudent: {
         type: Boolean,
-        default: false
+        default: true
     },
-    RSVPFixedField: [{
+    rsvpField: [{
         inputType: {
             type: String,
             enum: ['number', 'email', 'text']
         },
-        label: String
-    }],
-    RSVPField: [{
-        inputType: {
-            type: String,
-            enum: ['number', 'email', 'text']
-        },
-        label: String
+        label: String,
+        canRemove:{
+            type:Boolean,
+            default:true
+        }
     }]
 })
 

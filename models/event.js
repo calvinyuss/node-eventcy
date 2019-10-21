@@ -33,10 +33,7 @@ const EventSchema = mongoose.Schema({
         type: Date,
         default: Date.now() + 3600
     },
-    RSVPID: [{
-        _id: mongoose.Schema.Types.ObjectId,
-        label: String
-    }]
+    rsvpID: Array
 })
 
 module.exports = mongoose.model('Event', EventSchema);
