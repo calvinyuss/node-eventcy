@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const RSVPSchema = mongoose.Schema({
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "event"
+        ref: "Event",
+        default: mongoose.ObjectId
     },
     rsvpName: {
         type: String,
@@ -15,7 +16,10 @@ const RSVPSchema = mongoose.Schema({
         type: String,
         default: ""
     },
-    seatCount: Number,
+    seatCount: {
+        type: Number,
+        default: 0
+    },
     forStudent: {
         type: Boolean,
         default: true

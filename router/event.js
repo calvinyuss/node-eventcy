@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Event = require("../models/event");
 const event = require("../controller/event");
+const rsvp = require("../controller/rsvp")
 const { requireAuth } = require("../middleware/auth");
 
 /**
@@ -18,16 +19,11 @@ router.get("/:eventID", requireAuth, event.eventDetails)
  */
 router.put("/:eventID", requireAuth, event.eventEdit)
 
-//go to rsvp api
-router.use("/:eventID/rsvp", async (req, res, next) => {
-    try {
-        const event = await Event.findById(req.params.eventID);
-        if (!event) return res.status(404).json({ message: "Event id not found" });
-        next()
-    } catch (err) {
-        console.log(err);
-        res.status(500).json("Something went wrong, please try again");
-    }
-}, require("./rsvp"))
+/**
+ * @router POST api/event/{eventID}/rsvp
+ * @desc add new rsvp
+ * @access admin only
+ */
+router.post("/:eventID/rsvp",requireAuth, rsvp.addRsvp)
 
 module.exports = router;

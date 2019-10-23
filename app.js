@@ -19,6 +19,9 @@ app.use("/api/admin", require("./router/admin/admin"))
 //event api 
 app.use("/api/event", require("./router/event"))
 
+//rsvip api
+app.use("/api/rsvp",require("./router/rsvp"))
+
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
