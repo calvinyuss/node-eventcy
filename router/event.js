@@ -23,6 +23,7 @@ router.put("/:eventID", requireAuth, event.eventEdit)
  * @router POST api/event/{eventID}/rsvp
  * @desc add new rsvp
  * @access admin only
+ * @returns rsvp details
  */
 router.post("/:eventID/rsvp",requireAuth, rsvp.addRsvp)
 

@@ -32,4 +32,35 @@ router.delete("/:rsvpID",rsvp.deleteRsvp)
  */
 // router.put("/:rsvpID/field", requireAuth, rsvp.editRsvpField )
 
+/**
+ * @router POST api/rsvp/{rsvpID}/form
+ * @desc add participant
+ * @access for user only
+ * @returns form details
+ */
+router.post("/:rsvpID/form",rsvp.addParticipant)
+
+/**
+ * @router GET api/rsvp/{rsvpID}/form
+ * @desc get all participant data using rsvp ID
+ * @access for admin only
+ * @returns get all particpant
+ */
+router.get("/:rsvpID/form",rsvp.getParticipant)
+
+/**
+ * @router PUT api/rsvp/{rsvpID}/form?id=
+ * @desc update participant search using query id
+ * @access for admin only
+ * @returns get all particpant
+ */
+router.put("/:rsvpID/form",rsvp.editParticipant)
+
+/**
+ * @router DELETE api/rsvp/{rsvpID}/form?id=
+ * @desc delete participant search using query id
+ * @access for admin only
+ */
+router.delete("/:rsvpID/form",rsvp.deleteParticipant)
+
 module.exports = router;

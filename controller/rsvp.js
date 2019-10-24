@@ -1,15 +1,17 @@
 const Event = require('../models/event')
 const RSVP = require('../models/rsvp')
+const Form = require('../models/form')
 
 /**
  * @router POST api/event/{eventID}/rsvp
  * @desc add new rsvp
  * @access admin only
+ * @returns rsvp details
  */
 exports.addRsvp = async (req, res) => {
   try {
     let event = await Event.findById(req.params.eventID);
-    if (!event) return res.status(400).json({ message: "Event id not found" })
+    if (!event) return res.status(404).json({ message: "Event id not found" })
     const field = [
       {
         inputType: "text",
@@ -49,7 +51,7 @@ exports.addRsvp = async (req, res) => {
     const newRsvp = await rsvp.save()
     event.rsvpID.push(newRsvp._id);
     const updateEvent = await event.save()
-    res.json({ eventDetail: updateEvent, rsvp: newRsvp })
+    res.json({ details: newRsvp })
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Something went wrong, please try again" })
@@ -65,7 +67,7 @@ exports.addRsvp = async (req, res) => {
 exports.getDetails = async (req, res) => {
   try {
     const rsvp = await RSVP.findById(req.params.rsvpID);
-    if (!rsvp) return res.status(400).json({ message: "RSVP id not found" })
+    if (!rsvp) return res.status(404).json({ message: "RSVP id not found" })
     res.json({ details: rsvp })
   } catch (err) {
     console.log(err)
@@ -81,7 +83,7 @@ exports.getDetails = async (req, res) => {
 exports.editRsvp = async (req, res) => {
   try {
     let rsvp = await RSVP.findById(req.params.rsvpID)
-    if (!rsvp) return res.status(400).json({ message: "RSVP id not found" })
+    if (!rsvp) return res.status(404).json({ message: "RSVP id not found" })
     const field = req.body
     console.log(rsvp)
     for (let [key, value] of Object.entries(field)) {
@@ -90,7 +92,7 @@ exports.editRsvp = async (req, res) => {
     }
     const newRsvp = await rsvp.save();
     res.json({ details: newRsvp })
-  }catch(err){
+  } catch (err) {
     console.log(err)
     res.status(500).json({ message: "Something went wrong, please try again" })
   }
@@ -105,7 +107,7 @@ exports.editRsvp = async (req, res) => {
 exports.deleteRsvp = async (req, res) => {
   try {
     let rsvp = await RSVP.findById(req.params.rsvpID)
-    if (!rsvp) return res.status(400).json({ message: "RSVP id not found" })
+    if (!rsvp) return res.status(404).json({ message: "RSVP id not found" })
     let event = await Event.findOne(rsvp.ownedBy)
     console.log(event.rsvpID)
     let index = event.rsvpID.indexOf(rsvp._id);
@@ -114,7 +116,7 @@ exports.deleteRsvp = async (req, res) => {
     await rsvp.remove()
     const updateEvent = await event.save()
     res.json({ details: updateEvent })
-  }catch(err){
+  } catch (err) {
     console.log(err)
     res.status(500).json({ message: "Something went wrong, please try again" })
   }
@@ -135,3 +137,77 @@ exports.deleteRsvp = async (req, res) => {
 //     console.log(element)
 //   });
 // }
+
+/**
+ * @router POST api/rsvp/{rsvpID}/form
+ * @desc add participant
+ * @access for user only
+ * @returns form details
+ */
+exports.addParticipant = async (req, res) => {
+  try {
+    const rsvp = await RSVP.findById(req.params.rsvpID);
+    if (!rsvp) return res.status(404).json({ message: "RSVP id not found" });
+    const form = new Form({
+      createdBy: rsvp._id,
+      participantData: req.body
+    })
+    const newForm = await form.save();
+    res.json({ details: form })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ message: "Something went wrong, please try again" })
+  }
+}
+
+/**
+ * @router GET api/rsvp/{rsvpID}/form
+ * @desc get all participant data using rsvp ID
+ * @access for admin only
+ * @returns get all particpant
+ */
+exports.getParticipant = async (req, res) => {
+  try {
+    const rsvp = await RSVP.findById(req.params.rsvpID);
+    if (!rsvp) return res.status(404).json({ message: "RSVP id not found" });
+    const allParticipant = await Form.find({ createdBy: rsvp._id });
+    if (allParticipant.length == 0) return res.status(400).json({ message: "No participant" })
+    res.json({ participant: allParticipant })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ message: "Something went wrong, please try again" })
+  }
+}
+
+exports.editParticipant = async (req, res) => {
+  try {
+    const rsvp = await RSVP.findById(req.params.rsvpID);
+    if (!rsvp) return res.status(404).json({ message: "RSVP id not found" });
+    if(!req.query) return res.status(400).json({ message: "Participant not found" });
+    let participant = await Form.findById(req.query.id);
+    if (!participant) return res.status(400).json({ message: "Participant not found" });
+    participant.participantData = req.body;
+    const updateParticipant = await participant.save();
+    console.log(updateParticipant)
+    res.json({ details: updateParticipant })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ message: "Something went wrong, please try again" })
+  }
+}
+
+exports.deleteParticipant = async (req, res) => {
+  try {
+    const rsvp = await RSVP.findById(req.params.rsvpID);
+    if (!rsvp) return res.status(404).json({ message: "RSVP id not found" });
+    if(!req.query) return res.status(400).json({ message: "Participant not found" });
+    let participant = await Form.findById(req.query.id);
+    if (!participant) return res.status(400).json({ message: "Participant not found" });
+    await participant.remove()
+    res.json({ message: "delete Success" })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ message: "Something went wrong, please try again" })
+  }
+}
+
