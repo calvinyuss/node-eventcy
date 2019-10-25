@@ -9,7 +9,7 @@ const { requireAuth } = require("../middleware/auth");
  * @desc get Event details using userID or eventID
  * @access for all user
  */
-router.get("/:eventID", requireAuth, event.eventDetails)
+router.get("/:eventID", event.eventDetails)
 
 /**
  * @router PUT api/event/{eventID}
