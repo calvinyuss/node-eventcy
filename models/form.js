@@ -7,7 +7,7 @@ const formSchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        default :'Pending',
+        default :'Accepted',
         enum : ['Pending','Waiting','Accepted','Rejected'] 
     },
     participantData: mongoose.Schema.Types.Mixed,

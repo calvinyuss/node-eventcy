@@ -148,12 +148,26 @@ exports.addParticipant = async (req, res) => {
   try {
     const rsvp = await RSVP.findById(req.params.rsvpID);
     if (!rsvp) return res.status(404).json({ message: "RSVP id not found" });
-    const form = new Form({
-      createdBy: rsvp._id,
-      participantData: req.body
-    })
+
+    const emailExsit = await Form.findOne({ createdBy: rsvp._id, "participantData.Email": req.body.Email });
+    if (emailExsit) return res.json({ message: "Email already exsit" });
+
+    const participant = await Form.find({ createdBy: rsvp._id, status: "Accepted" });
+    let form
+    if (rsvp.seatCount == participant.length) {
+      form = new Form({
+        createdBy: rsvp._id,
+        participantData: req.body,
+        status: "Waiting"
+      })
+    } else {
+      form = new Form({
+        createdBy: rsvp._id,
+        participantData: req.body
+      })
+    }
     const newForm = await form.save();
-    res.json({ details: form })
+    res.json({ details: newForm })
   } catch (err) {
     console.log(err)
     res.status(500).json({ message: "Something went wrong, please try again" })
@@ -183,7 +197,7 @@ exports.editParticipant = async (req, res) => {
   try {
     const rsvp = await RSVP.findById(req.params.rsvpID);
     if (!rsvp) return res.status(404).json({ message: "RSVP id not found" });
-    if(!req.query) return res.status(400).json({ message: "Participant not found" });
+    if (!req.query) return res.status(400).json({ message: "Participant not found" });
     let participant = await Form.findById(req.query.id);
     if (!participant) return res.status(400).json({ message: "Participant not found" });
     participant.participantData = req.body;
@@ -200,7 +214,7 @@ exports.deleteParticipant = async (req, res) => {
   try {
     const rsvp = await RSVP.findById(req.params.rsvpID);
     if (!rsvp) return res.status(404).json({ message: "RSVP id not found" });
-    if(!req.query) return res.status(400).json({ message: "Participant not found" });
+    if (!req.query) return res.status(400).json({ message: "Participant not found" });
     let participant = await Form.findById(req.query.id);
     if (!participant) return res.status(400).json({ message: "Participant not found" });
     await participant.remove()

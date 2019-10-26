@@ -19,7 +19,7 @@ const EventSchema = mongoose.Schema({
     },
     price: {
         type: Number,
-        default: ""
+        default: 0
     },
     payementTo: {
         type: String,
