@@ -151,8 +151,11 @@ exports.addParticipant = async (req, res) => {
 
     const emailExsit = await Form.findOne({ createdBy: rsvp._id, "participantData.Email": req.body.Email });
     if (emailExsit) return res.json({ message: "Email already exsit" });
-
     const participant = await Form.find({ createdBy: rsvp._id, status: "Accepted" });
+    let data = req.body
+    for(let [key,value] in Object.entries(data)){
+      if(typeof(value)==="string") data[key] = value.toLowerCase()
+    }
     let form
     if (rsvp.seatCount == participant.length) {
       form = new Form({
