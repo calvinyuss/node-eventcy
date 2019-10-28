@@ -153,8 +153,8 @@ exports.addParticipant = async (req, res) => {
     if (emailExsit) return res.json({ message: "Email already exsit" });
     const participant = await Form.find({ createdBy: rsvp._id, status: "Accepted" });
     let data = req.body
-    for(let [key,value] in Object.entries(data)){
-      if(typeof(value)==="string") data[key] = value.toLowerCase()
+    for (let [key, value] in Object.entries(data)) {
+      if (typeof (value) === "string") data[key] = value.toLowerCase()
     }
     let form
     if (rsvp.seatCount == participant.length) {
@@ -216,12 +216,12 @@ exports.editParticipant = async (req, res) => {
 exports.deleteParticipant = async (req, res) => {
   try {
     const rsvp = await RSVP.findById(req.params.rsvpID);
-    if (!rsvp) return res.status(404).json({ message: "RSVP id not found" });
-    if (!req.query) return res.status(400).json({ message: "Participant not found" });
-    let participant = await Form.findById(req.query.id);
+    if (!rsvp) return res.status(404).json({ message: "RSVP id not found" }); 
+    let participant = await Form.findById(req.params.formID);
     if (!participant) return res.status(400).json({ message: "Participant not found" });
+    if (participant.createdBy.toString() !== rsvp._id.toString()) return res.status(401).json({message: "THIS IS NOT YOURS, ASSHOLE"})
     await participant.remove()
-    res.json({ message: "delete Success" })
+    res.status(204).send("Success")
   } catch (err) {
     console.log(err)
     res.status(500).json({ message: "Something went wrong, please try again" })

@@ -57,10 +57,10 @@ router.get("/:rsvpID/form",rsvp.getParticipant)
 router.put("/:rsvpID/form",rsvp.editParticipant)
 
 /**
- * @router DELETE api/rsvp/{rsvpID}/form?id=
- * @desc delete participant search using query id
+ * @router DELETE api/rsvp/{rsvpID}/form/{formID}
+ * @desc delete participant
  * @access for admin only
  */
-router.delete("/:rsvpID/form",rsvp.deleteParticipant)
+router.delete("/:rsvpID/form/:formID",rsvp.deleteParticipant)
 
 module.exports = router;
