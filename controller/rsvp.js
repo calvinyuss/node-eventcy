@@ -188,7 +188,6 @@ exports.getParticipant = async (req, res) => {
     const rsvp = await RSVP.findById(req.params.rsvpID);
     if (!rsvp) return res.status(404).json({ message: "RSVP id not found" });
     const allParticipant = await Form.find({ createdBy: rsvp._id });
-    if (allParticipant.length == 0) return res.status(400).json({ message: "No participant" })
     res.json({ participant: allParticipant })
   } catch (err) {
     console.log(err)
