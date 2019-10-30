@@ -152,7 +152,7 @@ exports.addParticipant = async (req, res) => {
     if (emailExsit) return res.json({ message: "Email already exsit" });
     const participant = await Form.find({ createdBy: rsvp._id, status: "Accepted" });
     let data = req.body
-    if(!req.bod) return ({message: "Ohh.., You leave something behind"})
+    if(!req.body) return res.status(400).json({message: "Ohh.., You leave something behind"})
     for (let [key, value] in Object.entries(data)) {
       if (typeof (value) === "string") data[key] = value.toLowerCase()
     }
