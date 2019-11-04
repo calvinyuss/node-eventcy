@@ -13,13 +13,17 @@ const EventSchema = mongoose.Schema({
         type: String,
         default: ""
     },
+    venue:{
+        type: String,
+        default: ""
+    },
     openRegis: {
         type: Boolean,
         default: false,
     },
-    price: {
-        type: Number,
-        default: 0
+    date: {
+        type: Date,
+        default: Date.now()
     },
     payementTo: {
         type: String,

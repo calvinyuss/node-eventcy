@@ -7,12 +7,12 @@ const RSVPSchema = mongoose.Schema({
         ref: "Event",
         default: mongoose.ObjectId
     },
-    rsvpName: {
+    name: {
         type: String,
         required: true,
         default: "Registration"
     },
-    rsvpDetail: {
+    description: {
         type: String,
         default: ""
     },
@@ -20,9 +20,13 @@ const RSVPSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-    forStudent: {
+    public: {
         type: Boolean,
-        default: true
+        default: false
+    },
+    price: {
+        type: Number,
+        default: 0
     },
     rsvpField: [{
         inputType: {
