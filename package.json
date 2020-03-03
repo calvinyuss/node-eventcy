@@ -3,6 +3,9 @@
   "version": "2.0.0",
   "description": "UPH SISTEM REGISTRATION",
   "main": "app.js",
+  "engines": {
+    "node": "10.16.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",

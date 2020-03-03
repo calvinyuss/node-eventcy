@@ -25,7 +25,7 @@ const EventSchema = mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    payementTo: {
+    paymentTo: {
         type: String,
         default: ""
     },

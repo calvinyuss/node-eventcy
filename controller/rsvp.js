@@ -102,7 +102,6 @@ exports.editRsvp = async (req, res) => {
  * @router DELETE api/rsvp/{rsvpID}
  * @desc delete rsvp
  * @access admin only
- * @returns event details
  */
 exports.deleteRsvp = async (req, res) => {
   try {
@@ -115,7 +114,7 @@ exports.deleteRsvp = async (req, res) => {
     console.log(event.rsvpID)
     await rsvp.remove()
     const updateEvent = await event.save()
-    res.json({ details: updateEvent })
+    res.status(204)
   } catch (err) {
     console.log(err)
     res.status(500).json({ message: "Something went wrong, please try again" })
